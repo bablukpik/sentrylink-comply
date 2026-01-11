@@ -9,7 +9,7 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "SentryLink Comply - Evidence Vault",
-  description: "Modern compliance document management system for factories and suppliers",
+  description: "Evidence management and compliance platform",
 }
 
 export default function RootLayout({

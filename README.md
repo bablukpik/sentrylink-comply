@@ -61,7 +61,20 @@ This application centralizes all evidence management in one place.
 
 ## Features & Screens
 
-### Screen A: Evidence Vault (List View)
+### Evidence Creation Flow
+
+This section clarifies how evidence creation is handled across the three screens, per the project requirements:
+
+| Screen       | Evidence Creation Flow                                        |
+| ------------ | ------------------------------------------------------------- |
+| **Screen A** | No "Add Evidence" button - only displays existing vault items |
+| **Screen B** | "Upload New Version" for **existing** evidence only           |
+| **Screen C** | "Fulfill" modal has option to "create new evidence (mock)"    |
+
+### Screen A: Evidence Vault
+
+- The "Add Evidence" button in the header is **decorative only** and does not implement a creation flow
+- Focus is on browsing, filtering, and selecting existing evidence
 
 **Route:** `/`
 
@@ -75,6 +88,9 @@ This application centralizes all evidence management in one place.
 
 ### Screen B: Evidence Detail + Version History
 
+- "Upload New Version" button adds a **new version** to an existing document
+- Does not create a new evidence record, only appends to version history
+
 **Route:** `/evidence/[id]`
 
 | Feature            | Description                                                                 |
@@ -84,7 +100,13 @@ This application centralizes all evidence management in one place.
 | Version Details    | Each version shows: upload date, uploader name, notes, file size            |
 | Upload New Version | Modal to add new version with required notes field and optional expiry date |
 
-### Screen C: Buyer Request To-Do
+### Screen C: Buyer Request
+
+- The "Fulfill" modal provides two tabs:
+  1. **"Link Existing Evidence"** - Select from vault
+  2. **"Create New Evidence"** - Shows a mock placeholder message
+- The "Create New Evidence" option satisfies the requirement for _"create new evidence (mock)"_
+- This is intentionally a simulated action, not a full form implementation
 
 **Route:** `/requests`
 
