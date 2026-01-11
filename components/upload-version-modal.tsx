@@ -3,12 +3,15 @@
 import type React from "react"
 
 import { useState } from "react"
+import { format } from "date-fns"
 import { Modal } from "@/components/modal"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Upload } from "lucide-react"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Upload, CalendarIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
 import type { Evidence } from "@/lib/mock-data"
 
 interface UploadVersionModalProps {
@@ -20,9 +23,10 @@ interface UploadVersionModalProps {
 
 export function UploadVersionModal({ open, onOpenChange, evidence, onUpload }: UploadVersionModalProps) {
   const [notes, setNotes] = useState("")
-  const [expiryDate, setExpiryDate] = useState("")
+  const [expiryDate, setExpiryDate] = useState<Date | undefined>(undefined)
   const [file, setFile] = useState<File | null>(null)
   const [error, setError] = useState("")
+  const [calendarOpen, setCalendarOpen] = useState(false)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -30,21 +34,31 @@ export function UploadVersionModal({ open, onOpenChange, evidence, onUpload }: U
       setError("Notes are required")
       return
     }
-    onUpload({ notes, expiryDate, file })
+    onUpload({
+      notes,
+      expiryDate: expiryDate ? format(expiryDate, "yyyy-MM-dd") : "",
+      file
+    })
     // Reset form
     setNotes("")
-    setExpiryDate("")
+    setExpiryDate(undefined)
     setFile(null)
     setError("")
+    setCalendarOpen(false)
     onOpenChange(false)
   }
 
   const handleClose = () => {
     setNotes("")
-    setExpiryDate("")
+    setExpiryDate(undefined)
     setFile(null)
     setError("")
+    setCalendarOpen(false)
     onOpenChange(false)
+  }
+
+  const handleDateConfirm = () => {
+    setCalendarOpen(false)
   }
 
   return (
@@ -82,13 +96,39 @@ export function UploadVersionModal({ open, onOpenChange, evidence, onUpload }: U
 
         <div className="space-y-2">
           <Label htmlFor="expiry">Expiry Date (Optional)</Label>
-          <Input
-            id="expiry"
-            type="date"
-            value={expiryDate}
-            onChange={(e) => setExpiryDate(e.target.value)}
-            className="bg-input border-border"
-          />
+          <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal bg-input border-border",
+                  !expiryDate && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {expiryDate ? format(expiryDate, "PPP") : "Pick a date"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={expiryDate}
+                onSelect={setExpiryDate}
+                initialFocus
+              />
+              <div className="p-3 border-t border-border">
+                <Button
+                  type="button"
+                  onClick={handleDateConfirm}
+                  className="w-full"
+                  size="sm"
+                >
+                  OK
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
 
         <div className="space-y-2">
