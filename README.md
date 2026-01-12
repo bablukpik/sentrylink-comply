@@ -65,15 +65,14 @@ This application centralizes all evidence management in one place.
 
 This section clarifies how evidence creation is handled across the three screens, per the project requirements:
 
-| Screen       | Evidence Creation Flow                                        |
-| ------------ | ------------------------------------------------------------- |
-| **Screen A** | No "Add Evidence" button - only displays existing vault items |
-| **Screen B** | "Upload New Version" for **existing** evidence only           |
-| **Screen C** | "Fulfill" modal has option to "create new evidence (mock)"    |
+| Screen       | Evidence Creation Flow                                     |
+| ------------ | ---------------------------------------------------------- |
+| **Screen A** | Displays existing vault items                              |
+| **Screen B** | "Upload New Version" for **existing** evidence only        |
+| **Screen C** | "Fulfill" modal has option to "create new evidence (mock)" |
 
 ### Screen A: Evidence Vault
 
-- The "Add Evidence" button in the header is **decorative only** and does not implement a creation flow
 - Focus is on browsing, filtering, and selecting existing evidence
 
 **Route:** `/`
@@ -207,7 +206,15 @@ This UI can be extended to integrate with:
 
 ---
 
-## Demo Walkthrough
+## Demo
+
+### 📹 Screen Recording
+
+A complete walkthrough demonstrating all features of the application:
+
+https://github.com/user-attachments/assets/sentrylink-demo.mp4
+
+> **Note:** The video file is located at `demo/sentrylink-demo.mp4` in this repository.
 
 ### Evidence Vault
 
@@ -231,68 +238,6 @@ This UI can be extended to integrate with:
 3. Click "Fulfill" on any request
 4. Choose to link existing evidence or create new
 5. Submit to mark as fulfilled
-
----
-
-## Development Notes
-
-### Adding Real Data
-
-Replace the mock data in `lib/mock-data.ts` with API calls:
-
-```typescript
-// Example: Fetching evidence from API
-const { data: evidence } = useSWR("/api/evidence", fetcher);
-```
-
-### Adding Authentication
-
-Wrap protected routes with auth middleware:
-
-```typescript
-// middleware.ts
-export function middleware(request: NextRequest) {
-  // Add authentication logic
-}
-```
-
-### Database Schema (Suggested)
-
-```sql
--- Evidence documents
-CREATE TABLE evidence (
-  id UUID PRIMARY KEY,
-  name VARCHAR(255),
-  doc_type VARCHAR(50),
-  status VARCHAR(20),
-  expiry_date DATE,
-  created_at TIMESTAMP,
-  updated_at TIMESTAMP
-);
-
--- Version history
-CREATE TABLE evidence_versions (
-  id UUID PRIMARY KEY,
-  evidence_id UUID REFERENCES evidence(id),
-  version_number INT,
-  file_url TEXT,
-  file_size VARCHAR(20),
-  notes TEXT,
-  uploaded_by VARCHAR(100),
-  uploaded_at TIMESTAMP
-);
-
--- Buyer requests
-CREATE TABLE buyer_requests (
-  id UUID PRIMARY KEY,
-  doc_type VARCHAR(50),
-  buyer_name VARCHAR(100),
-  due_date DATE,
-  status VARCHAR(20),
-  notes TEXT,
-  fulfilled_evidence_id UUID REFERENCES evidence(id)
-);
-```
 
 ---
 

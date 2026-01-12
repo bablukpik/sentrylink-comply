@@ -121,11 +121,21 @@ export function EvidenceVaultList({ onUploadVersion }: EvidenceVaultListProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => router.push(`/evidence/${item.id}`)}>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation()
+                  router.push(`/evidence/${item.id}`)
+                }}
+              >
                 <Eye className="w-4 h-4 mr-2" />
                 View Details
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => onUploadVersion(item)}>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onUploadVersion(item)
+                }}
+              >
                 <Upload className="w-4 h-4 mr-2" />
                 Upload Version
               </DropdownMenuItem>
