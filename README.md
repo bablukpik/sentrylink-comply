@@ -212,7 +212,7 @@ This UI can be extended to integrate with:
 
 A complete walkthrough demonstrating all features of the application:
 
-https://github.com/user-attachments/assets/sentrylink-demo.mp4
+https://github.com/user-attachments/assets/22cfe8bf-96ec-4b51-b2ed-79b4cba68a94
 
 > **Note:** The video file is located at `demo/sentrylink-demo.mp4` in this repository.
 
